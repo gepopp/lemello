@@ -56,7 +56,7 @@ Route::middleware( [
             'customer' => $customer,
             'subscriptionId' => $subscription->id,
             'client_secret' => $subscription->latest_invoice->payment_intent->client_secret,
-            'redirect' => \route('subscription')
+            'redirect' => \route('dashboard')
         ] );
     } )->name( 'subscription' );
 
