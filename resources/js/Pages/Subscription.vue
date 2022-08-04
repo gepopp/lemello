@@ -11,19 +11,34 @@ const intent = usePage().props.value.intent
 const customer = usePage().props.value.customer
 
 onMounted(() => {
-
-    console.log(customer)
-
     stripe.value = Stripe(usePage().props.value.key);
     elements.value = stripe.value.elements({
-        clientSecret: intent.client_secret,
-        priceId: "price_1LRkwyHs0uYxWjsAu9gXpQpf",
-        customerId: customer.id
+        clientSecret: usePage().props.value.client_secret,
+        appearance: {
+            variables: {
+                borderRadius: "0px"
+            }
+        }
     });
     card.value = elements.value.create('payment');
     card.value.mount('#element');
 })
 
+async function pay(e) {
+
+    e.preventDefault();
+
+    var elem = elements.value;
+
+    await stripe.value.confirmPayment({
+        elements: elem,
+        confirmParams: {
+            return_url: "http://projects.test/subscription",
+        }
+    });
+
+
+}
 
 </script>
 
@@ -42,6 +57,9 @@ onMounted(() => {
 
                     <label>Card</label>
                     <div id="element"></div>
+
+                    <p @click="pay(e)">send</p>
+
                 </div>
             </div>
         </div>
