@@ -26,8 +26,6 @@ onMounted(() => {
 
 async function pay(e) {
 
-    e.preventDefault();
-
     var elem = elements.value;
 
     await stripe.value.confirmPayment({
