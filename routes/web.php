@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,31 +16,38 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Auth/Login');
-});
+Route::get( '/', function () {
 
-Route::middleware([
+    return Inertia::render( 'Auth/Login' );
+} );
+
+Route::middleware( [
     'auth:sanctum',
-    config('jetstream.auth_session'),
+    config( 'jetstream.auth_session' ),
     'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+] )->group( function () {
+
+    Route::get( '/dashboard', function () {
+
+        return Inertia::render( 'Dashboard' );
+    } )->name( 'dashboard' );
 
 
-    Route::get('/subscription', function () {
-        return Inertia::render('Subscription', [
-            'intent' => \Illuminate\Support\Facades\Auth::user()->account->createSetupIntent(),
-            'customer' => \Illuminate\Support\Facades\Auth::user()->account->createOrGetStripeCustomer()]);
-    })->name('subscription');
+    Route::get( '/subscription', function () {
+
+        return Inertia::render( 'Subscription', [
+            'intent'   => \Illuminate\Support\Facades\Auth::user()->account->createSetupIntent(),
+            'key' => env( 'STRIPE_KEY' ),
+            'customer' => \Illuminate\Support\Facades\Auth::user()->account->createOrGetStripeCustomer(),
+        ] );
+    } )->name( 'subscription' );
 
 
-});
+} );
 
 
-Route::get('/notification', function () {
-    return (new \Illuminate\Auth\Notifications\VerifyEmail())
-        ->toMail(\App\Models\User::first());
-});
+Route::get( '/notification', function () {
+
+    return ( new \Illuminate\Auth\Notifications\VerifyEmail() )
+        ->toMail( \App\Models\User::first() );
+} );

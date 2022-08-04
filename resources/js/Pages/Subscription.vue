@@ -14,7 +14,7 @@ onMounted(() => {
 
     console.log(customer)
 
-    stripe.value = Stripe('pk_live_51LRklHHs0uYxWjsAuKHsakrV1GamfssCxDBfXq03lCH1RYmBwelENnnUYsVEuKUTkiBo29PrXdKSWPBjRwje3PTO00jKZINZnd');
+    stripe.value = Stripe(usePage().props.value.key);
     elements.value = stripe.value.elements({
         clientSecret: intent.client_secret,
         priceId: "price_1LRkwyHs0uYxWjsAu9gXpQpf",
