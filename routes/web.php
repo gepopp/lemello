@@ -55,7 +55,8 @@ Route::middleware( [
             'key' => env( 'STRIPE_KEY' ),
             'customer' => $customer,
             'subscriptionId' => $subscription->id,
-            'client_secret' => $subscription->latest_invoice->payment_intent->client_secret
+            'client_secret' => $subscription->latest_invoice->payment_intent->client_secret,
+            'redirect' => \route('subscription')
         ] );
     } )->name( 'subscription' );
 

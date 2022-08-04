@@ -31,7 +31,7 @@ async function pay(e) {
     await stripe.value.confirmPayment({
         elements: elem,
         confirmParams: {
-            return_url: "http://projects.test/subscription",
+            return_url: usePage().props.value.redirect,
         }
     });
 
