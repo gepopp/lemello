@@ -33,32 +33,8 @@ Route::middleware( [
     } )->name( 'dashboard' );
 
 
-    Route::get( '/subscription', function () {
-
-        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        $stripe = new Stripe\StripeClient( env('STRIPE_SECRET'));
-
-        $customer = \Illuminate\Support\Facades\Auth::user()->account->createOrGetStripeCustomer();
-
-        $subscription = $stripe->subscriptions->create([
-            'customer' => \Illuminate\Support\Facades\Auth::user()->account->stripe_id,
-            'items' => [[
-                            'price' => "price_1LRkwyHs0uYxWjsAu9gXpQpf",
-                        ]],
-            'payment_behavior' => 'default_incomplete',
-            'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
-            'expand' => ['latest_invoice.payment_intent'],
-        ]);
-
-
-        return Inertia::render( 'Subscription', [
-            'key' => env( 'STRIPE_KEY' ),
-            'customer' => $customer,
-            'subscriptionId' => $subscription->id,
-            'client_secret' => $subscription->latest_invoice->payment_intent->client_secret,
-            'redirect' => \route('dashboard')
-        ] );
-    } )->name( 'subscription' );
+    Route::get( '/subscribe', [ \App\Http\Controllers\SubscriptionsController::class, 'susbcribe' ] )->name( 'subscribe' );
+    Route::get( '/account/{account}/subscription', [ \App\Http\Controllers\SubscriptionsController::class, 'subscription' ] )->name( 'subscription' );
 
 
 } );
