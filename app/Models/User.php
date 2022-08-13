@@ -12,11 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
-
-class User extends Authenticatable implements MustVerifyEmail, CanResetPassword {
-
-
-
+class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
+{
 
 
     use HasApiTokens;
@@ -24,7 +21,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword 
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
 
 
     /**
@@ -40,9 +36,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword 
     ];
 
 
-
-
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -56,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword 
     ];
 
 
-
+    protected $with = ['account'];
 
 
     /**
@@ -69,9 +62,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword 
     ];
 
 
-
-
-
     /**
      * The accessors to append to the model's array form.
      *
@@ -82,11 +72,9 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword 
     ];
 
 
+    public function account()
+    {
 
-
-
-    public function account() {
-
-        return $this->belongsTo( Account::class );
+        return $this->belongsTo(Account::class);
     }
 }

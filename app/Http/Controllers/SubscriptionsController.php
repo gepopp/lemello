@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\Authenticate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Account;
 use Laravel\Cashier\Cashier;
-use Stripe\StripeClient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SubscriptionsController extends Controller
 {
 
-    public function subscription(Account $account)
+    public function subscription()
     {
 
-        $subscription = $account->subscriptions()->where('name', 'default')->active()->first();
+        $subscription = Auth::user()->account->subscriptions()->where('name', 'default')->active()->first();
         $stripe_subscription = Cashier::stripe()->subscriptions->retrieve($subscription->stripe_id);
 
         $pay = 0;
@@ -27,11 +26,12 @@ class SubscriptionsController extends Controller
 
 
         return Inertia::render('Subscription', [
-            'account' => $account,
+            'account' => Auth::user()->account,
             'subscription' => [
                 'next_bill' => (new Carbon($stripe_subscription->current_period_end))->format('d.m.y'),
                 'amount' => $pay,
-                'payment_method' => Cashier::stripe()->paymentMethods->retrieve($stripe_subscription->default_payment_method)
+                'payment_methods' => Auth::user()->account->paymentMethods(),
+                'default_payment_method' => Auth::user()->account->defaultPaymentMethod()
             ]
         ]);
 
@@ -41,14 +41,53 @@ class SubscriptionsController extends Controller
     public function susbcribe()
     {
 
+        $billingdata = Auth::user()->account->settings->billigndata ?? [
+                'bill_to' => Auth::user()->account->name,
+                'address' => null,
+                'address_addition' => null,
+                'zip' => null,
+                'city' => null,
+                'country' => null,
+                'terms' => null,
+            ];
+
+
         $payment = Cashier::stripe()->setupIntents->create([
-            'payment_method_types' => ['card', 'sepa_debit', 'sofort'],
+            'payment_method_types' => ['card', 'sepa_debit'],
         ]);
 
-        return Inertia::render('Subscribe', [
-            'key' => env('STRIPE_KEY'),
-            'client_secret' => $payment->client_secret,
-            'redirect' => \route('dashboard')
+        return Inertia::render('Subscribe',
+            [
+                'key' => env('STRIPE_KEY'),
+                'client_secret' => $payment->client_secret,
+                'redirect' => \route('dashboard'),
+                'billingdata' => $billingdata
+            ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "intent" => ['required', 'array'],
+            "bill_to" => ['required', 'string', 'max:255'],
+            "address" => ['required', 'string', 'max:255'],
+            "address_addition" => ['nullable', 'string', 'max:255'],
+            "zip" => ['integer', 'required'],
+            "city" => ['required', 'string', 'max:255'],
+            "country" => ['required', 'string', 'max:255'],
+            "terms" => ['accepted']
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->with('intent', Cashier::stripe()->setupIntents->create([
+                'payment_method_types' => ['card', 'sepa_debit'],
+            ]));
+        }
+
+        $subscription = Auth::user()->account->newSubscription(
+            'default', 'price_1LRkwyHs0uYxWjsAu9gXpQpf'
+        )->create($request->intent['payment_method']);
+
+        return redirect(route('subscription', Auth::user()->account));
     }
 }

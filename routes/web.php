@@ -34,11 +34,16 @@ Route::middleware( [
 
 
     Route::get( '/subscribe', [ \App\Http\Controllers\SubscriptionsController::class, 'susbcribe' ] )->name( 'subscribe' );
-    Route::get( '/account/{account}/subscription', [ \App\Http\Controllers\SubscriptionsController::class, 'subscription' ] )->name( 'subscription' );
+    Route::post('/subscribe', [ \App\Http\Controllers\SubscriptionsController::class, 'store'])->name('subscribe.store');
+    Route::get( '/subscription', [ \App\Http\Controllers\SubscriptionsController::class, 'subscription' ] )->name( 'subscription' );
 
 
 } );
 
+
+Route::get('terms', function (){
+   return 'terms to come';
+})->name('terms.show');
 
 Route::get( '/notification', function () {
 
