@@ -28,6 +28,7 @@ class SubscriptionsController extends Controller
         return Inertia::render('Subscription', [
             'account' => Auth::user()->account,
             'subscription' => [
+                'invoices'  => Auth::user()->account->invoicesIncludingPending(),
                 'next_bill' => (new Carbon($stripe_subscription->current_period_end))->format('d.m.y'),
                 'amount' => $pay,
                 'payment_methods' => Auth::user()->account->paymentMethods(),
@@ -41,7 +42,7 @@ class SubscriptionsController extends Controller
     public function susbcribe()
     {
 
-        $billingdata = Auth::user()->account->settings->billigndata ?? [
+        $billingdata = Auth::user()->account->settings['billingdata'] ?? [
                 'bill_to' => Auth::user()->account->name,
                 'address' => null,
                 'address_addition' => null,
@@ -50,7 +51,6 @@ class SubscriptionsController extends Controller
                 'country' => null,
                 'terms' => null,
             ];
-
 
         $payment = Cashier::stripe()->setupIntents->create([
             'payment_method_types' => ['card', 'sepa_debit'],
@@ -84,9 +84,21 @@ class SubscriptionsController extends Controller
             ]));
         }
 
-        $subscription = Auth::user()->account->newSubscription(
-            'default', 'price_1LRkwyHs0uYxWjsAu9gXpQpf'
-        )->create($request->intent['payment_method']);
+        if (Auth::user()->account->subscribed('default')) {
+
+            Auth::user()->account->updateDefaultPaymentMethod($request->intent['payment_method']);
+        } else {
+
+            Auth::user()->account->newSubscription(
+                'default', 'price_1LRkwyHs0uYxWjsAu9gXpQpf'
+            )->create($request->intent['payment_method']);
+        }
+
+        Auth::user()->account->update([
+            'settings' => [
+                'billingdata' => $request->all()
+            ]
+        ]);
 
         return redirect(route('subscription', Auth::user()->account));
     }

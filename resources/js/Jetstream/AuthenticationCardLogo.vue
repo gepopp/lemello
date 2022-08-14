@@ -25,6 +25,6 @@ import { Link } from '@inertiajs/inertia-vue3';
 		C979.3,70.4,1070.2,76.3,1140.5,119.8L1140.5,119.8z"/>
 </g>
 </svg>
-        <h1 class="text-3xl font-bold">lemolo.io</h1>
+        <h1 class="text-3xl font-bold">lemollo.com</h1>
     </Link>
 </template>
