@@ -51,3 +51,12 @@ Route::get( '/notification', function () {
     return ( new \Illuminate\Auth\Notifications\VerifyEmail() )
         ->toMail( \App\Models\User::first() );
 } );
+
+
+Route::get('pdf', function (\Codedge\Fpdf\Fpdf\Fpdf $fpdf){
+    $fpdf->AddPage();
+    $fpdf->SetFont('Arial', 'B', 18);
+    $fpdf->Cell(50, 25, 'Hello World!');
+    $fpdf->Output();
+    exit;
+});
