@@ -38,6 +38,7 @@ Route::middleware( [
     Route::get( '/subscription', [ \App\Http\Controllers\SubscriptionsController::class, 'subscription' ] )->name( 'subscription' );
 
 
+    Route::get('subscription/invoice/{invoice}', [ \App\Http\Controllers\PdfController::class, 'subscriptionInvoice'])->name('subscription.invoice');
 } );
 
 

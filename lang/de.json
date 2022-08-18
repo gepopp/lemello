@@ -760,5 +760,7 @@
     "Zip / Postal Code": "Postleitzahl",
     "Åland Islands": "Åland",
     "passwords.sent" : "Dein Link ist unterwegs.",
-    "passwords.reset" : "Dein Passwort wurde geändert."
+    "passwords.reset" : "Dein Passwort wurde geändert.",
+    "auth.failed" : "Diese Zugangsdaten sind nicht korrekt!",
+    "validation.unique" : "Diese E-Mail Adresse ist bereits registriert."
 }

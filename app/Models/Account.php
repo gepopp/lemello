@@ -37,12 +37,25 @@ class Account extends Model {
     }
 
 
-    public function activeSubscriptions()
-    {
-        return $this->subscriptions()->where(function ($query) {
-            $query->whereNull('ends_at');
-            $query->orWhere('ends_at', '>', now());
-        });
+
+
+
+    public function subscriptionInvoices() {
+
+        return $this->hasMany( SubscriptionInvoice::class );
+    }
+
+
+
+
+
+    public function activeSubscriptions() {
+
+        return $this->subscriptions()->where( function ( $query ) {
+
+            $query->whereNull( 'ends_at' );
+            $query->orWhere( 'ends_at', '>', now() );
+        } );
     }
 
 }

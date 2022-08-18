@@ -37,6 +37,8 @@ class CreateNewUser implements CreatesNewUsers {
             'email'        => [ 'required', 'string', 'email', 'max:255', 'unique:users' ],
             'password'     => $this->passwordRules(),
             'terms'        => Jetstream::hasTermsAndPrivacyPolicyFeature() ? [ 'accepted', 'required' ] : '',
+        ], [
+            'email.unique' => 'Diese E-Mail-Adresse ist bereits registriert.'
         ])->validate();
 
         $account = Account::create( [ 'name' => $input['account_name'] ] );

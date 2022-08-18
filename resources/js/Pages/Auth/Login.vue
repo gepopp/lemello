@@ -40,7 +40,6 @@ const submit = () => {
         <template #sidebar>
             <h1 class="text-5xl font-extrabold mb-4">login</h1>
             <p>
-                Heute schon Buchhaltung gemacht?
             </p>
         </template>
 

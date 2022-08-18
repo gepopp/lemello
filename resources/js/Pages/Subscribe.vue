@@ -183,14 +183,14 @@ function showMessage(messageText) {
                                                            class="underline text-sm text-gray-600 hover:text-gray-900">
                                         AGB</a> einverstanden.
                                     </div>
-                                </div>terms
+                                </div>
                                 <p class="text-red-600 text-xs" v-if="errors.terms" v-text="errors.terms"/>
 
                             </JetLabel>
                         </div>
 
-                        <div class="flex items-center justify-end mt-4">
-                            <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
+                        <div class="flex items-center justify-start mt-4">
+                            <JetButton :class="{ 'opacity-25': form.processing }"
                                        :disabled="form.processing">
                                 Abo kostenpflichtig abschliessen
                             </JetButton>

@@ -159,9 +159,13 @@ const logout = () => {
                                             Profile
                                         </JetDropdownLink>
 
-                                        <JetDropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
-                                            API Tokens
+                                        <JetDropdownLink :href="route('subscription')">
+                                            Abo
                                         </JetDropdownLink>
+
+<!--                                        <JetDropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">-->
+<!--                                            API Tokens-->
+<!--                                        </JetDropdownLink>-->
 
                                         <div class="border-t border-gray-100" />
 

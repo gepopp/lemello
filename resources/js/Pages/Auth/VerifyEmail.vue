@@ -1,6 +1,6 @@
 <script setup>
 import {computed} from 'vue';
-import {useForm} from '@inertiajs/inertia-vue3';
+import { Head, useForm} from '@inertiajs/inertia-vue3';
 import JetAuthenticationCard from '@/Jetstream/AuthenticationCard.vue';
 import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue';
 import JetButton from '@/Jetstream/Button.vue';
@@ -19,7 +19,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 </script>
 
 <template>
-    <Head title="Email Verification"/>
+    <Head title="E-Mail Adresse Bestätigen"/>
 
     <JetAuthenticationCard>
         <template #logo>
