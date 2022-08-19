@@ -32,15 +32,16 @@ const submit = () => {
 <template>
     <Head title="Log in" />
 
+
+
     <JetAuthenticationCard>
         <template #logo>
             <JetAuthenticationCardLogo />
         </template>
 
         <template #sidebar>
-            <h1 class="text-5xl font-extrabold mb-4">login</h1>
-            <p>
-            </p>
+            <h1 class="text-5xl font-extrabold mb-10">login</h1>
+            <p></p>
         </template>
 
         <JetValidationErrors class="mb-4" />
@@ -91,6 +92,8 @@ const submit = () => {
                 </JetButton>
             </div>
         </form>
-
+        <Link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900">
+            Noch keinen Account?
+        </Link>
     </JetAuthenticationCard>
 </template>
