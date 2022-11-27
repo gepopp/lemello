@@ -17,23 +17,11 @@ class SubscriptionsController extends Controller
     {
 
         $subscription = Auth::user()->account->subscriptions()->where('name', 'default')->active()->first();
-        $stripe_subscription = Cashier::stripe()->subscriptions->retrieve($subscription->stripe_id);
-
-        $pay = 0;
-        foreach ($stripe_subscription->items->data as $item) {
-            $pay += $item->price->unit_amount;
-        }
 
 
         return Inertia::render('Subscription', [
             'account' => Auth::user()->account,
-            'subscription' => [
-                'invoices'  => Auth::user()->account->invoicesIncludingPending(),
-                'next_bill' => (new Carbon($stripe_subscription->current_period_end))->format('d.m.y'),
-                'amount' => $pay,
-                'payment_methods' => Auth::user()->account->paymentMethods(),
-                'default_payment_method' => Auth::user()->account->defaultPaymentMethod()
-            ]
+            'subscription' => $subscription
         ]);
 
     }

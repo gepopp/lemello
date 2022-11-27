@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Contact;
+use App\Observers\ContactObserver;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\StripeWebhookListener;
 use Laravel\Cashier\Events\WebhookReceived;
@@ -32,7 +34,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Contact::observe( ContactObserver::class );
     }
 
     /**

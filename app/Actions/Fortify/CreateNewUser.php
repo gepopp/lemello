@@ -42,6 +42,7 @@ class CreateNewUser implements CreatesNewUsers {
         ])->validate();
 
         $account = Account::create( [ 'name' => $input['account_name'] ] );
+        $account->createAsStripeCustomer();
 
         return User::create( [
             'account_id' => $account->id,

@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://lemolo.io'),
+    'url' => env('APP_URL', 'https://lemollo.com'),
 
     'asset_url' => env('ASSET_URL'),
 

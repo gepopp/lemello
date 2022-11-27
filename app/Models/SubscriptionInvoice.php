@@ -23,6 +23,23 @@ class SubscriptionInvoice extends Model {
 
 
 
+    protected $appends = [ 'stripe' ];
+
+
+
+
+
+
+    public function getStripeAttribute() {
+
+        return $this->account->findInvoice($this->stripe_id);
+
+    }
+
+
+
+
+
     public function account() {
 
         return $this->belongsTo( Account::class );

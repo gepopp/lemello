@@ -6,7 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "akaunting/laravel-money": "^3.1",
         "codedge/laravel-fpdf": "^1.9",
+        "doctrine/dbal": "^3.5",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.5.2",
         "laravel/cashier": "^13.13",
@@ -15,12 +17,15 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "league/flysystem-aws-s3-v3": "3.0",
+        "moneyphp/money": "^4.0",
         "spatie/browsershot": "^3.57",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "laravel-lang/lang": "^11.0",
+        "laravel-lang/attributes": "^2.0",
+        "laravel-lang/lang": "^12.3",
+        "laravel-lang/publisher": "^14.4",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
@@ -33,7 +38,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

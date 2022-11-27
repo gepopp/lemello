@@ -33,9 +33,12 @@ module.exports = {
                     700 : "#7A5E02",
                     800 : "#3B2D01",
                 }
+            },
+            fontSize:{
+                'xxs': ['10px', '12px']
             }
         },
     },
 
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('@tailwindcss/line-clamp')],
 };

@@ -37,7 +37,15 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'authCardImage' => asset('images/fruits.svg')
+            'locale' => function(){
+                return app()->getLocale();
+            },
+            'language' => function(){
+                return translations(
+                    resource_path('lang/'. app()->getLocale() .'.json')
+                );
+            },
+            'icon' => asset('images/logo_icon.svg'),
         ]);
     }
 }

@@ -15,3 +15,30 @@
 .st2 {
     fill: #EAA416;
 }
+table{
+
+}
+thead{
+    @apply border-b border-gray-400;
+}
+th, td{
+    @apply text-left py-4;
+}
+td{
+    @apply px-2;
+}
+tr:nth-child(2n){
+    @apply bg-gray-50;
+}
+tr:hover{
+    @apply bg-gray-100 cursor-pointer;
+}
+tfoot tr:hover{
+    @apply bg-white !important;
+}
+td:first-child{
+    @apply pl-3;
+}
+td:last-child{
+    @apply pr-3;
+}

@@ -42,7 +42,7 @@ class StripeWebhookListener {
             $account = Cashier::findBillable( $invoice['customer'] );
 
             $account->subscriptionInvoices()->create([
-               'stripe_id' => $invoice['customer']
+               'stripe_id' => $invoice['id']
             ]);
 
         }

@@ -21,7 +21,12 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@popperjs/core": "^2.11.6",
+        "@tailwindcss/line-clamp": "^0.4.2",
         "chromium": "^3.0.3",
-        "puppeteer": "^16.1.1"
+        "click-outside-vue3": "^4.0.1",
+        "moment": "^2.29.4",
+        "puppeteer": "^16.1.1",
+        "requirejs": "^2.3.6"
     }
 }

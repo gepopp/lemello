@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Address>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
 class AddressFactory extends Factory
 {
@@ -17,7 +17,10 @@ class AddressFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'line_1'    => fake()->address,
+            'zip'       => fake()->postcode,
+            'city'      => fake()->city,
+            'country_id' => 13,
         ];
     }
 }

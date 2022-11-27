@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import {onMounted, ref, computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useForm, usePage} from "@inertiajs/inertia-vue3";
 import JetButton from '@/Jetstream/Button.vue';
 import JetInput from '@/Jetstream/Input.vue';
@@ -28,7 +28,7 @@ onMounted(() => {
     setupStripe();
 });
 
-function setupStripe(){
+function setupStripe() {
     elements.value = stripe.value.elements({
         clientSecret: usePage().props.value.client_secret,
         appearance: {
@@ -98,7 +98,12 @@ function showMessage(messageText) {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
+                <div class="bg-white overflow-hidden shadow-xl rounded-3xl p-10">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <img :src="usePage().props.value.icon" class="w-12">
+                        <h1 class="text-5xl font-extrabold">Go juicy!</h1>
+                    </div>
+                    <p class="mb-10">Nur noch ein Schritt bis du die volle Power von lemollo nutzen kannst.</p>
                     <form id="payment-form" v-on:submit.prevent="handleSubmit">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
