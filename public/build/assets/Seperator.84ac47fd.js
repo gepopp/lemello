@@ -1,1 +1,0 @@
-import{_ as r}from"./_plugin-vue_export-helper.cdc0426e.js";import{o as e,e as o}from"./app.542b9e37.js";const c={},t={class:"mb-5 pb-5 border-b border-gray-400"};function s(n,_){return e(),o("div",t)}const p=r(c,[["render",s]]);export{p as S};

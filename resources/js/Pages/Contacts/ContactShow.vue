@@ -1,7 +1,7 @@
 <script setup>
 // noinspection ES6UnusedImports start
 import {Head, Link, useForm, usePage} from "@inertiajs/inertia-vue3";
-import {onMounted, ref, computed} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Seperator from '@/Shared/Seperator.vue';
 import GenderIcon from '@/Shared/GenderIcon.vue';
@@ -32,7 +32,7 @@ const formatDateTime = (dateTime, format) => {
     return moment(dateTime).locale(usePage().props.value.locale).format(format);
 }
 
-const sumMins = computed( () => {
+const sumMins = computed(() => {
 
     var minutes = 0;
     props.contact.timetracks.map((track) => minutes += track.minutes);
@@ -42,15 +42,15 @@ const sumMins = computed( () => {
 const sumHrs = computed(() => {
     var hrs = 0;
     props.contact.timetracks.map((track) => {
-        hrs += ( Math.round((track.minutes/60)*100)/100 );
+        hrs += (Math.round((track.minutes / 60) * 100) / 100);
     })
     return hrs;
 });
 const netto = computed(() => {
-    return  Math.round( (sumHrs.value * 95.43) * 100 ) / 100;
+    return Math.round((sumHrs.value * 95.43) * 100) / 100;
 })
-const brutto = computed( () => {
-    return Math.round( netto.value * 1.2 * 100 ) / 100;
+const brutto = computed(() => {
+    return Math.round(netto.value * 1.2 * 100) / 100;
 })
 </script>
 
@@ -85,8 +85,8 @@ const brutto = computed( () => {
                                     <span v-text="contact.company.address.line_1"/>, <span v-text="contact.company.address.zip"/> <span v-text="contact.company.address.city"/>
                                 </p>
                             </div>
-                            <Seperator/>
                         </div>
+                        <Seperator v-if="contact.company"/>
 
 
                         <p class="text-2xl">
@@ -133,30 +133,32 @@ const brutto = computed( () => {
 
 
                 <div>
-                    <h3 class="text-xl font-semibold">{{ __('Timetracks') }}</h3>
-                    <table class="w-full">
-                        <tr v-for="track in contact.timetracks">
-                            <td>
-                                <p v-text="formatDateTime(track.created_at, 'DD.MM.YY')"/>
-                                <p v-text="formatDateTime(track.created_at, 'hh:mm')" class="text-sm font-thin"/>
-                            </td>
-                            <td>
-                                <p><span v-text="Math.round(track.minutes / 60)"/>:<span v-text="track.minutes % 60"/></p>
-                                <p v-text="Math.round( (track.minutes / 60 ) * 100) / 100" class="text-sm font-thin"/>
-                            </td>
-                            <td class="whitespace-pre">{{ track.note }}</td>
-                        </tr>
-                        <tfoot>
-                        <tr>
-                            <td>{{ __('Total:') }}</td>
-                            <td colspan="2">
-                                <p class="flex justify-end">{{ sumHrs }} Stunden à 95,43 = {{ netto }}</p>
-                                <p class="text-sm font-thin flex justify-end" v-text="brutto - netto"/>
-                                <p class="font-bold flex justify-end" v-text="brutto"/>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
+                    <div v-if="contact.timetracks">
+                        <h3 class="text-xl font-semibold">{{ __('Timetracks') }}</h3>
+                        <table class="w-full">
+                            <tr v-for="track in contact.timetracks">
+                                <td>
+                                    <p v-text="formatDateTime(track.created_at, 'DD.MM.YY')"/>
+                                    <p v-text="formatDateTime(track.created_at, 'hh:mm')" class="text-sm font-thin"/>
+                                </td>
+                                <td>
+                                    <p><span v-text="Math.round(track.minutes / 60)"/>:<span v-text="(track.minutes % 60).length != 2 ? '0' : '' + track.minutes % 60"/></p>
+                                    <p v-text="Math.round( (track.minutes / 60 ) * 100) / 100" class="text-sm font-thin"/>
+                                </td>
+                                <td class="whitespace-pre">{{ track.note }}</td>
+                            </tr>
+                            <tfoot>
+                            <tr>
+                                <td>{{ __('Total:') }}</td>
+                                <td colspan="2">
+                                    <p class="flex justify-end">{{ sumHrs }} Stunden à 95,43 = {{ netto }}</p>
+                                    <p class="text-sm font-thin flex justify-end" v-text="Math.round( (brutto - netto) * 100 ) / 100"/>
+                                    <p class="font-bold flex justify-end" v-text="brutto"/>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
