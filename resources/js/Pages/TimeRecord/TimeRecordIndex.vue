@@ -1,58 +1,38 @@
 <script setup>
 // noinspection ES6UnusedImports start
 import {Head, Link, useForm, usePage} from '@inertiajs/inertia-vue3';
+import Seperator from '@/Shared/Seperator.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import ContactSelect from '@/Shared/ContactSelect.vue';
-import Seperator from '@/Shared/Seperator.vue';
+import TimeTrackForm from '@/Shared/TimeTrackForm.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import FromField from '@/Jetstream/FromField.vue';
-import JetButton from '@/Jetstream/Button.vue';
-import {computed, onMounted, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 // noinspection ES6UnusedImports end
 const props = defineProps({
     sum: String,
     count: Number
 })
 
-const childRef = ref();
 const tracks = ref({});
 const links = ref({});
-const errors = computed(() => usePage().props.value.errors);
-const hasErrors = computed(() => Object.keys(errors.value).length > 0);
-
-onMounted(() => load());
-
-const form = useForm({
-    contact_id: null,
-    duration: '',
-    note: ''
-})
-
 const page = ref(0);
 const customer_id = ref(false);
 
+onMounted(() => load());
+
 const load = () => {
-    axios.get(route('timetrack.loadIndex', { page: page.value, customer_id: customer_id.value })).then(data => {
+    axios.get(route('timetrack.loadIndex', {page: page.value, customer_id: customer_id.value})).then(data => {
         tracks.value = data.data.data;
         links.value = data.data.links;
     });
 }
 
-const submit = () => {
-    form.post(route('timetrack.store'), {
-        onSuccess: () => {
-            load();
-            form.reset();
-        }
-    })
-}
-
 const setPage = (key) => {
-    if(key === 0 && page.value > 1){
+    if (key === 0 && page.value > 1) {
         page.value--;
-    }else if( key === links.value.length -1 && page.value < links.value.length -1 ){
+    } else if (key === links.value.length - 1 && page.value < links.value.length - 1) {
         page.value++;
-    }else if( key !== 0 && key !== links.value.length - 1 ){
+    } else if (key !== 0 && key !== links.value.length - 1) {
         page.value = key;
     }
 }
@@ -69,40 +49,10 @@ watch(() => customer_id.value, value => load());
             </h2>
         </template>
 
-        <form v-on:submit.prevent="submit">
-            <div class="grid grid-cols-1 md:grid-cols-3 md:gap-x-10">
-                <div class="my-2">
-                    <JetLabel class="mb-1">{{ __('Select Customer') }}</JetLabel>
-                    <ContactSelect
-                        :contact="null"
-                        :form="form"
-                        @remove="form.contact_id = null"
-                        @set="company => form.contact_id = company.id"
-                        :address="false"/>
-                </div>
-                <FromField :form="form" id="duration" :label="__('Duration')" type="time" :required="true"/>
-                <div class="my-2">
-                    <JetLabel for="note">{{ __('Note') }}<span class="text-red-500">*</span></JetLabel>
-                    <div class="relative overflow-hidden">
-                        <textarea
-                            id="name"
-                            v-model="form.note"
-                            class="border-gray-300 focus:border-orange-300 focus:border-2 focus:ring-0 focus:outline-none focus:shadow-none shadow-sm mt-1 block w-full"
-                            :class="errors.note ? 'border-2 border-red-500' : ''"
-                            v-on:focus="delete errors.note"
-                        />
-                        <Transition name="error">
-                            <p class="absolute left-0 bottom-0 text-red-600 text-xxs ml-3 line-clamp-1 hover:line-clamp-3" v-if="errors.note" v-text="errors.note"/>
-                        </Transition>
-                    </div>
-                </div>
-            </div>
-            <div class="flex justify-end mt-5 w-full">
-                <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    {{ __('save') }}
-                </JetButton>
-            </div>
-        </form>
+        <div class="p-3 bg-gray-100">
+            <h3 class="text-xl font-bold">{{ __('New Time Record') }}</h3>
+            <TimeTrackForm v-on:saved="load"/>
+        </div>
 
         <Seperator/>
 
@@ -110,7 +60,6 @@ watch(() => customer_id.value, value => load());
             <JetLabel class="mb-1">{{ __('Filter') }}</JetLabel>
             <ContactSelect
                 :contact="null"
-                :form="form"
                 :filter="{tracks:true}"
                 @remove="customer_id = 0"
                 @set="company => customer_id = company.id"
@@ -135,7 +84,8 @@ watch(() => customer_id.value, value => load());
             <template v-for="track in tracks">
                 <tr v-on:click.prevent="$inertia.visit(route('contact.show', contact))">
                     <td>
-                        {{ track.created }}
+                        <p>{{ track.started }} <span v-if="track.ended !== ''" v-text="' - '"/>{{ track.ended }}</p>
+                        <p class="text-xs font-thin">{{ track.created }}</p>
                     </td>
                     <td>
                         <p>{{ track.customer }}</p>

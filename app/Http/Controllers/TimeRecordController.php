@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Contact;
 use App\Models\TimeRecord;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTimeRecordRequest;
@@ -32,7 +31,7 @@ class TimeRecordController extends Controller
     {
 
         return TimeRecord::filter($request->only('customer_id'))
-                         ->orderBy('created_at', 'DESC')
+                         ->orderBy('started_at', 'DESC')
                          ->paginate(10)
                          ->withQueryString()
                          ->through(fn($record) => [
@@ -47,7 +46,9 @@ class TimeRecordController extends Controller
                              'netto'          => money(($record->minutes / 60) * 9543, 'EUR')->format(),
                              'vat'            => money((($record->minutes / 60) * 9543) * .2, 'EUR')->format(),
                              'brutto'         => money((($record->minutes / 60) * 9543) * 1.2, 'EUR')->format(),
-                             'created'        => $record->created_at->format('d.m.Y h:i'),
+                             'created'        => $record->created_at->format('d.m.Y H:i'),
+                             'started'        => $record->started_at ? $record->started_at->format('d.m. H:i') : '--',
+                             'ended'          => $record->started_at ? $record->ended_at->format('H:i') : '',
                              'note'           => $record->note,
                          ]);
     }

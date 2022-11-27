@@ -4,6 +4,7 @@ import {Head, useForm, usePage} from "@inertiajs/inertia-vue3";
 import AppLayout from '@/Layouts/AppLayout.vue';
 import JetFormField from '@/Jetstream/FromField.vue';
 import InlineAddressFields from '@/Shared/InlineAddressFields.vue';
+import ContactSelect from '@/Shared/ContactSelect.vue';
 import Seperator from '@/Shared/Seperator.vue';
 import JetButton from '@/Jetstream/Button.vue';
 import JetLabel from '@/Jetstream/Label.vue';
@@ -32,7 +33,8 @@ const form = useForm({
     line_2: '',
     zip: '',
     city: '',
-    country_id: null
+    country_id: null,
+    contact_id: null
 });
 
 const submit = () => {
@@ -69,6 +71,13 @@ const hasErrors = computed(() => Object.keys(errors.value).length > 0);
                         </div>
                     </div>
                     <Seperator/>
+
+                    <div v-if="!company">
+                        <ContactSelect v-on:set="company => form.contact_id = company.id" v-on:remove="form.contact_id = null"/>
+                        <Seperator/>
+                    </div>
+
+
                     <Transition>
                         <div v-if="!company" class="mt-2 mb-4">
                             <JetLabel :for="form.gender">{{ __('Gender') }}</JetLabel>

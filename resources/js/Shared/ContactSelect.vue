@@ -5,7 +5,6 @@ import {ref, watch, withDirectives} from "vue";
 // noinspection ES6UnusedImports end
 const props = defineProps({
     contact: Object,
-    form: Object,
     address: {
         type: Boolean,
         default: true
@@ -16,24 +15,11 @@ const props = defineProps({
     }
 })
 
-
-const onClickOutside = (event) => {
-    console.log('Clicked outside. Event: ', event)
-}
-
 const emits = defineEmits(['remove', 'set']);
 const search = ref('');
 const attachedCompany = ref(props.contact?.company);
 const searchedCompanies = ref([]);
-
-watch(
-    () => props.form.contact_id,
-    (id) => {
-        if (id == null) {
-            reset();
-        }
-    }
-)
+const inFocus = ref(0);
 
 const debouncedHandler = _.debounce(event => {
     axios.get(route('company.search', {...{search: event.target.value}, ...props.filter}))
@@ -62,13 +48,24 @@ const reset = () => {
 <template>
     <div v-if="!attachedCompany">
         <div class="relative">
-            <JetInput id="search" v-on:input="debouncedHandler" class="mt-1 block w-full" type="text"/>
+            <JetInput id="search"
+                      v-on:input="debouncedHandler"
+                      class="mt-1 block w-full"
+                      type="text"
+                      v-on:keydown.down="inFocus < searchedCompanies.length - 1 ? inFocus++ : inFocus = 0"
+                      v-on:keydown.up="inFocus > 0 ? inFocus-- : inFocus = searchedCompanies.length - 1"
+                      v-on:keydown.enter="setCompany(searchedCompanies[inFocus])"
+            />
             <div v-if="searchedCompanies.length"
                  v-click-outside="reset"
                  class="absolute bg-white shadow-2xl border border-gray-100 w-full p-2 z-50">
-                <div v-for="company in searchedCompanies"
+                <div v-for="( company, index ) in searchedCompanies"
                      v-on:click="setCompany(company)"
-                     class="border border-gray-400 p-2 hover:bg-gray-200 hover:border-2 hover:border-orange-600 cursor-pointer mb-2">
+
+                     v-on:mouseover="inFocus = index"
+                     class="border border-gray-400 p-2 cursor-pointer mb-2"
+                    :class="inFocus == index ? 'bg-gray-200 border-2 border-orange-600' :''"
+                    >
                     <p v-text="company.name"/>
                     <p class="text-xs font-thin">
                         <span v-text="company.address.line_1"/>, <span v-text="company.address.zip"/> <span v-text="company.address.city"/>

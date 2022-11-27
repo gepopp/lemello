@@ -1,10 +1,12 @@
 <script setup>
 // noinspection ES6UnusedImports start
 import {Head, Link, useForm, usePage} from "@inertiajs/inertia-vue3";
-import {onMounted, ref, computed} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Seperator from '@/Shared/Seperator.vue';
 import GenderIcon from '@/Shared/GenderIcon.vue';
+import JetModal from '@/Jetstream/Modal.vue';
+import TimeTrackForm from '@/Shared/TimeTrackForm.vue';
 // noinspection ES6UnusedImports end
 const props = defineProps({
     contact: Object
@@ -13,6 +15,7 @@ const props = defineProps({
 const lang = usePage().props.value.locale;
 const employees = ref([]);
 const loading = ref(false);
+const addTimetrack = ref(false);
 
 onMounted(() => {
     if (props.contact.is_company == 1) {
@@ -32,7 +35,7 @@ const formatDateTime = (dateTime, format) => {
     return moment(dateTime).locale(usePage().props.value.locale).format(format);
 }
 
-const sumMins = computed( () => {
+const sumMins = computed(() => {
 
     var minutes = 0;
     props.contact.timetracks.map((track) => minutes += track.minutes);
@@ -42,15 +45,15 @@ const sumMins = computed( () => {
 const sumHrs = computed(() => {
     var hrs = 0;
     props.contact.timetracks.map((track) => {
-        hrs += ( Math.round((track.minutes/60)*100)/100 );
+        hrs += (Math.round((track.minutes / 60) * 100) / 100);
     })
     return hrs;
 });
 const netto = computed(() => {
-    return  Math.round( (sumHrs.value * 95.43) * 100 ) / 100;
+    return Math.round((sumHrs.value * 95.43) * 100) / 100;
 })
-const brutto = computed( () => {
-    return Math.round( netto.value * 1.2 * 100 ) / 100;
+const brutto = computed(() => {
+    return Math.round(netto.value * 1.2 * 100) / 100;
 })
 </script>
 
@@ -64,7 +67,12 @@ const brutto = computed( () => {
 
 
         <div class="relative">
-            <div class="absolute top-0 right-0 -mt-16">
+            <div class="absolute top-0 right-0 -mt-16 flex space-x-3">
+                <div class="flex items-center justify-center w-14 h-14 rounded-full bg-orange-200 shadow-3xl cursor-pointer" v-on:click="addTimetrack = !addTimetrack">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
                 <div class="w-14 h-14 rounded-full bg-orange-200 shadow-3xl">
                     <Link :href="route('contact.edit', contact)" class="flex justify-center items-center h-full w-full">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-white">
@@ -85,8 +93,8 @@ const brutto = computed( () => {
                                     <span v-text="contact.company.address.line_1"/>, <span v-text="contact.company.address.zip"/> <span v-text="contact.company.address.city"/>
                                 </p>
                             </div>
-                            <Seperator/>
                         </div>
+                        <Seperator v-if="contact.company"/>
 
 
                         <p class="text-2xl">
@@ -133,33 +141,40 @@ const brutto = computed( () => {
 
 
                 <div>
-                    <h3 class="text-xl font-semibold">{{ __('Timetracks') }}</h3>
-                    <table class="w-full">
-                        <tr v-for="track in contact.timetracks">
-                            <td>
-                                <p v-text="formatDateTime(track.created_at, 'DD.MM.YY')"/>
-                                <p v-text="formatDateTime(track.created_at, 'hh:mm')" class="text-sm font-thin"/>
-                            </td>
-                            <td>
-                                <p><span v-text="Math.round(track.minutes / 60)"/>:<span v-text="track.minutes % 60"/></p>
-                                <p v-text="Math.round( (track.minutes / 60 ) * 100) / 100" class="text-sm font-thin"/>
-                            </td>
-                            <td class="whitespace-pre">{{ track.note }}</td>
-                        </tr>
-                        <tfoot>
-                        <tr>
-                            <td>{{ __('Total:') }}</td>
-                            <td colspan="2">
-                                <p class="flex justify-end">{{ sumHrs }} Stunden à 95,43 = {{ netto }}</p>
-                                <p class="text-sm font-thin flex justify-end" v-text="brutto - netto"/>
-                                <p class="font-bold flex justify-end" v-text="brutto"/>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
+                    <div v-if="contact.timetracks.length">
+                        <h3 class="text-xl font-semibold">{{ __('Timetracks') }}</h3>
+                        <table class="w-full">
+                            <tr v-for="track in contact.timetracks">
+                                <td>
+                                    <p v-text="formatDateTime(track.created_at, 'DD.MM.YY')"/>
+                                    <p v-text="formatDateTime(track.created_at, 'hh:mm')" class="text-sm font-thin"/>
+                                </td>
+                                <td>
+                                    <p><span v-text="String(Math.round(track.minutes / 60)).padStart(2, '0')"/>:<span v-text="String(track.minutes % 60).padStart(2, '0')"/></p>
+                                    <p v-text="Math.round( (track.minutes / 60 ) * 100) / 100" class="text-sm font-thin"/>
+                                </td>
+                                <td class="whitespace-pre">{{ track.note }}</td>
+                            </tr>
+                            <tfoot>
+                            <tr>
+                                <td class="align-top">{{ __('Total:') }}</td>
+                                <td colspan="2">
+                                    <p class="flex justify-end">{{ sumHrs }} Stunden à 95,43 = {{ netto }}</p>
+                                    <p class="text-sm font-thin flex justify-end" v-text="Math.round( (brutto - netto) * 100 ) / 100"/>
+                                    <p class="font-bold flex justify-end" v-text="brutto"/>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+        <JetModal :show="addTimetrack" v-on:close="addTimetrack = false">
+            <div class="p-5">
+                <TimeTrackForm class="flex-col space-x-0" :contact_id="contact.id" v-on:saved="addTimetrack = false"/>
+            </div>
+        </JetModal>
     </AppLayout>
 </template>
 
