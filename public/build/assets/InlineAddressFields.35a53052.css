@@ -1,0 +1,1 @@
+.error-enter-active,.error-leave-active{transition:transform .5s ease;transform:translateY(0)}.error-enter-from,.error-leave-to{opacity:0;transform:translateY(110%)}
