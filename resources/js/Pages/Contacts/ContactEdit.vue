@@ -1,6 +1,6 @@
 <script setup>
 // noinspection ES6UnusedImports start
-import {Head, useForm, usePage} from "@inertiajs/inertia-vue3";
+import {Head, useForm, usePage, Link} from "@inertiajs/inertia-vue3";
 import AppLayout from '@/Layouts/AppLayout.vue';
 import JetFormField from '@/Jetstream/FromField.vue';
 import JetInput from '@/Jetstream/Input.vue';
@@ -127,7 +127,8 @@ const hasErrors = computed(() => Object.keys(errors.value).length > 0);
 
 
             </div>
-            <div class="mt-5 flex w-full justify-end">
+            <div class="mt-5 flex w-full justify-end items-center">
+                <Link :href="route('contact.show', contact)" class="mr-3 text-gray-600">{{ __('cancel' )}}</Link>
                 <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     {{ __('save') }}
                 </JetButton>
