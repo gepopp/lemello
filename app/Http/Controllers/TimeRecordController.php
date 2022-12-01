@@ -38,7 +38,7 @@ class TimeRecordController extends Controller
                              'id'             => $record->id,
                              'customer'       => $record->timetrackable->name,
                              'address'        => $record->timetrackable->address->line_1 . ', ' . $record->timetrackable->address->zip . ' ' . $record->timetrackable->address->city,
-                             'duration'       => round($record->minutes / 60) . 'h ' . $record->minutes % 60 . 'min',
+                             'duration'       => round(( $record->minutes - ( $record->minutes % 60 )) / 60) . 'h ' . $record->minutes % 60 . 'min',
                              'duration_float' => round($record->minutes / 60, 2),
                              'rate'           => money(9543, 'EUR')->format(),
                              'rate_vat'       => money(9543 * .2, 'EUR')->format(),
