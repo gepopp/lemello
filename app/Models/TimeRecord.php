@@ -18,6 +18,7 @@ class TimeRecord extends Model
         'ended_at'   => 'datetime',
     ];
 
+    protected $guarded = [];
 
     protected $fillable = [
         'timetrackable_type',

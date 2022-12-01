@@ -82,7 +82,7 @@ watch(() => customer_id.value, value => load());
             </thead>
             <tbody>
             <template v-for="track in tracks">
-                <tr v-on:click.prevent="$inertia.visit(route('contact.show', contact))">
+                <tr v-on:click.prevent="$inertia.visit(route('timetrack.show', track))">
                     <td>
                         <p>{{ track.started }} <span v-if="track.ended !== ''" v-text="' - '"/>{{ track.ended }}</p>
                         <p class="text-xs font-thin">{{ track.created }}</p>

@@ -83,9 +83,9 @@ class TimeRecordController extends Controller
      * @param \App\Models\TimeRecord $timeRecord
      * @return \Illuminate\Http\Response
      */
-    public function show(TimeRecord $timeRecord)
+    public function show(TimeRecord $timetrack)
     {
-        //
+        return Inertia::render('TimeRecord/TimeRecordShow', compact('timetrack'));
     }
 
     /**
@@ -117,8 +117,10 @@ class TimeRecordController extends Controller
      * @param \App\Models\TimeRecord $timeRecord
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TimeRecord $timeRecord)
+    public function destroy(TimeRecord $timetrack)
     {
-        //
+        $timetrack->delete();
+
+        return redirect()->route('timetrack.index');
     }
 }

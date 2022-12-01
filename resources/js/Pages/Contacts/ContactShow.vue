@@ -7,6 +7,7 @@ import Seperator from '@/Shared/Seperator.vue';
 import GenderIcon from '@/Shared/GenderIcon.vue';
 import JetModal from '@/Jetstream/Modal.vue';
 import TimeTrackForm from '@/Shared/TimeTrackForm.vue';
+import DeleteModel from '@/Shared/DeleteModel.vue';
 // noinspection ES6UnusedImports end
 const props = defineProps({
     contact: Object
@@ -80,7 +81,9 @@ const brutto = computed(() => {
                         </svg>
                     </Link>
                 </div>
+                <DeleteModel :delete-route="route('contact.destroy', contact)"/>
             </div>
+
 
 
             <div class="grid grid-cols-1 md:grid-cols-2 md:gap-x-10">
@@ -159,7 +162,7 @@ const brutto = computed(() => {
                             <tr>
                                 <td class="align-top">{{ __('Total:') }}</td>
                                 <td colspan="2">
-                                    <p class="flex justify-end">{{ sumHrs }} Stunden à 95,43 = {{ netto }}</p>
+                                    <p class="flex justify-end">{{ Math.round( sumHrs * 100 ) / 100 }} Stunden à 95,43 = {{ netto }}</p>
                                     <p class="text-sm font-thin flex justify-end" v-text="Math.round( (brutto - netto) * 100 ) / 100"/>
                                     <p class="font-bold flex justify-end" v-text="brutto"/>
                                 </td>

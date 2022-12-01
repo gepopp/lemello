@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, nextTick } from 'vue';
+import {nextTick, reactive, ref} from 'vue';
 import JetButton from './Button.vue';
 import JetDialogModal from './DialogModal.vue';
 import JetInput from './Input.vue';
@@ -8,7 +8,7 @@ import JetSecondaryButton from './SecondaryButton.vue';
 
 const emit = defineEmits(['confirmed']);
 
-defineProps({
+const props = defineProps({
     title: {
         type: String,
         default: 'Confirm Password',
@@ -21,6 +21,10 @@ defineProps({
         type: String,
         default: 'Confirm',
     },
+    alwaysConfirm: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const confirmingPassword = ref(false);
@@ -34,15 +38,20 @@ const form = reactive({
 const passwordInput = ref(null);
 
 const startConfirmingPassword = () => {
-    axios.get(route('password.confirmation')).then(response => {
-        if (response.data.confirmed) {
-            emit('confirmed');
-        } else {
-            confirmingPassword.value = true;
+    if ( props.alwaysConfirm == false ) {
+        axios.get(route('password.confirmation')).then(response => {
+            if (response.data.confirmed) {
+                emit('confirmed');
+            } else {
+                confirmingPassword.value = true;
+                setTimeout(() => passwordInput.value.focus(), 250);
+            }
+        });
+    } else {
+        confirmingPassword.value = true;
+        setTimeout(() => passwordInput.value.focus(), 250);
+    }
 
-            setTimeout(() => passwordInput.value.focus(), 250);
-        }
-    });
 };
 
 const confirmPassword = () => {
@@ -73,7 +82,7 @@ const closeModal = () => {
 <template>
     <span>
         <span @click="startConfirmingPassword">
-            <slot />
+            <slot/>
         </span>
 
         <JetDialogModal :show="confirmingPassword" @close="closeModal">
@@ -94,7 +103,7 @@ const closeModal = () => {
                         @keyup.enter="confirmPassword"
                     />
 
-                    <JetInputError :message="form.error" class="mt-2" />
+                    <JetInputError :message="form.error" class="mt-2"/>
                 </div>
             </template>
 

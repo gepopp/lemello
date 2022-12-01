@@ -797,5 +797,6 @@
     "Female": "Weiblich",
     "Academic Title": "Akademischer Titel",
     "Post Graduate Title": "Nachgestellter Titel",
-    "Company": "Unternehmen"
+    "Company": "Unternehmen",
+    "Confirm delete" : "Löschen bestätigen"
 }

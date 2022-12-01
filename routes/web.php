@@ -41,6 +41,9 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
     Route::resource('contact', 'App\Http\Controllers\ContactController');
     Route::resource('timetrack', 'App\Http\Controllers\TimeRecordController');
     Route::get('load/timetrack', [ 'App\Http\Controllers\TimeRecordController', 'loadIndex' ])->name('timetrack.loadIndex');
+    Route::get('timetrackable/{timetrack}', function (\App\Models\TimeRecord $timetrack){
+       return $timetrack->timetrackable;
+    })->name('timetrackable');
 
     Route::get('countries', function () {
         return \App\Models\Country::all();

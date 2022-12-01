@@ -30,7 +30,7 @@ td{
 tr:nth-child(2n){
     @apply bg-gray-50;
 }
-tr:hover{
+tbody tr:hover{
     @apply bg-gray-100 cursor-pointer;
 }
 tfoot tr:hover{
