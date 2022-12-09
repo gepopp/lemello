@@ -1,8 +1,10 @@
 <?php
 
+
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DIN5008BillController;
+
+
 
 
 /*
@@ -16,11 +18,14 @@ use App\Http\Controllers\DIN5008BillController;
 |
 */
 Route::get('language/{language}', function ($language) {
+
     Session()->put('locale', $language);
+
     return redirect()->back();
 })->name('language');
 
 Route::get('/', function () {
+
     return Inertia::render('Auth/Login', [
         'background' => asset('images/fruits.svg'),
     ]);
@@ -29,6 +34,7 @@ Route::get('/', function () {
 Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified', ])->group(function () {
 
     Route::get('/dashboard', function () {
+
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
@@ -39,43 +45,26 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
     Route::get('subscription/invoice/{invoice}', [ \App\Http\Controllers\PdfController::class, 'subscriptionInvoice' ])->name('subscription.invoice');
 
     Route::resource('contact', 'App\Http\Controllers\ContactController');
+    Route::get('customer', [ \App\Http\Controllers\ContactController::class, 'customer' ])->name('customer.search');
+    Route::get('employees/{contact}', [ \App\Http\Controllers\ContactController::class, 'employees' ])->name('employees');
+
     Route::resource('timetrack', 'App\Http\Controllers\TimeRecordController');
     Route::get('load/timetrack', [ 'App\Http\Controllers\TimeRecordController', 'loadIndex' ])->name('timetrack.loadIndex');
-    Route::get('timetrackable/{timetrack}', function (\App\Models\TimeRecord $timetrack){
-       return $timetrack->timetrackable;
-    })->name('timetrackable');
+    Route::get('timetrackable/{timetrack}', [ \App\Http\Controllers\TimeRecordController::class, 'timetrackable' ])->name('timetrackable');
+
+    Route::resource('project', \App\Http\Controllers\ProjectController::class);
+    Route::get('load/projects', [ 'App\Http\Controllers\ProjectController', 'loadIndex' ])->name('projects.loadIndex');
+    Route::get('projectsearch', [ \App\Http\Controllers\ProjectController::class, 'search'])->name('project.search');
 
     Route::get('countries', function () {
+
         return \App\Models\Country::all();
     })->name('countries');
-
-    Route::get('company', function () {
-        return \App\Models\Contact::isCompany()
-                                  ->where('name', 'LIKE', '%' . request()->search . '%')
-                                  ->filter(\Illuminate\Support\Facades\Request::only('tracks'))
-                                  ->limit(5)
-                                  ->get();
-    })->name('company.search');
-
-    Route::get('employees/{contact}', function (\App\Models\Contact $contact) {
-        return $contact->contacts;
-    })->name('employees');
 
 });
 
 
 Route::get('terms', function () {
+
     return 'terms to come';
 })->name('terms.show');
-
-
-Route::get('/notification', function () {
-
-    return (new \Illuminate\Auth\Notifications\VerifyEmail())
-        ->toMail(\App\Models\User::first());
-});
-
-
-Route::get('pdf/{account}/{subscription_invoice}', DIN5008BillController::class);
-
-

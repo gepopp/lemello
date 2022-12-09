@@ -91,6 +91,7 @@ const logout = () => {
                 <Link :href="route('dashboard')">{{ __('Dashboard') }}</Link>
                 <Link :href="route('contact.index')">{{ __('Contacts') }}</Link>
                 <Link :href="route('timetrack.index')">{{ __('Timetrack') }}</Link>
+                <Link :href="route('project.index')">{{ __('Porjects') }}</Link>
             </nav>
         </div>
         <div class="w-full">

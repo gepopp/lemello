@@ -33,8 +33,6 @@ class StoreTimeRecordRequest extends FormRequest
         $this->merge([
             'account_id'         => auth()->user()->account->id,
             'user_id'            => auth()->id(),
-            'timetrackable_type' => request()->has('contact_id') ? Contact::class : null,
-            'timetrackable_id'   => request()->contact_id,
             'minutes'            => $minutes,
             'started_at'         => request()->has('created_at') ? Carbon::parse(request()->created_at) : now(),
             'ended_at'           => request()->has('created_at') ? Carbon::parse(request()->created_at)->addMinutes($minutes) : now()->addMinutes($minutes),

@@ -23,6 +23,12 @@
     "dependencies": {
         "@popperjs/core": "^2.11.6",
         "@tailwindcss/line-clamp": "^0.4.2",
+        "@tiptap/extension-bubble-menu": "^2.0.0-beta.207",
+        "@tiptap/extension-bullet-list": "^2.0.0-beta.207",
+        "@tiptap/extension-floating-menu": "^2.0.0-beta.207",
+        "@tiptap/extension-list-item": "^2.0.0-beta.207",
+        "@tiptap/starter-kit": "^2.0.0-beta.207",
+        "@tiptap/vue-3": "^2.0.0-beta.207",
         "chromium": "^3.0.3",
         "click-outside-vue3": "^4.0.1",
         "moment": "^2.29.4",

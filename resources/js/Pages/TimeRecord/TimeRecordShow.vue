@@ -5,6 +5,8 @@ import {onMounted, ref} from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import GenderIcon from '@/Shared/GenderIcon.vue';
 import Seperator from '@/Shared/Seperator.vue';
+import Contactbox from '@/Shared/Contactbox.vue';
+import Projectbox from '@/Shared/Projectbox.vue';
 import DeleteModel from '@/Shared/DeleteModel.vue';
 // noinspection ES6UnusedImports end
 const props = defineProps({
@@ -112,18 +114,8 @@ const round = (value) => {
                             <p class="text-xs font-thin bg-gray-200 w-96 max-w-full animate-pulse mt-1">&nbsp;</p>
                         </div>
                     </div>
-                    <Link v-if="timetrackable" class="border text-gray-800 p-2 flex space-x-3 hover:bg-gray-200" :href="route('contact.show', timetrackable)">
-                        <div class="flex-none shrink-0">
-                            <GenderIcon :contact="timetrackable"/>
-                        </div>
-                        <div>
-                            <p v-text="timetrackable.name"/>
-                            <p class="text-xs font-semibold" v-text="timetrackable.position" v-if="!timetrackable.is_company"/>
-                            <p class="text-xs font-thin mt-1">
-                                <span v-text="timetrackable.address.line_1"/>, <span v-text="timetrackable.address.zip"/> <span v-text="timetrackable.address.city"/>
-                            </p>
-                        </div>
-                    </Link>
+                    <Contactbox :contact="timetrackable" v-if="timetrackable && timetrack.timetrackable_type == 'App\\Models\\Contact'"></Contactbox>
+                    <Projectbox :project="timetrackable" v-if="timetrackable && timetrack.timetrackable_type == 'App\\Models\\Project'"></Projectbox>
                 </div>
             </div>
         </div>

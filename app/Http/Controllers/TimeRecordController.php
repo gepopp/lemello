@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+
 use Inertia\Inertia;
 use App\Models\TimeRecord;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTimeRecordRequest;
 use App\Http\Requests\UpdateTimeRecordRequest;
+
+
+
 
 class TimeRecordController extends Controller
 {
@@ -17,14 +21,15 @@ class TimeRecordController extends Controller
      */
     public function index()
     {
+
         return Inertia::render('TimeRecord/TimeRecordIndex',
             [
                 'count' => TimeRecord::count(),
                 'sum'   => round(TimeRecord::sum('minutes') / 60, 2) . ' ' . __('Hours'),
-
-
             ]);
     }
+
+
 
 
     public function loadIndex(Request $request)
@@ -36,9 +41,8 @@ class TimeRecordController extends Controller
                          ->withQueryString()
                          ->through(fn($record) => [
                              'id'             => $record->id,
-                             'customer'       => $record->timetrackable->name,
-                             'address'        => $record->timetrackable->address->line_1 . ', ' . $record->timetrackable->address->zip . ' ' . $record->timetrackable->address->city,
-                             'duration'       => round(( $record->minutes - ( $record->minutes % 60 )) / 60) . 'h ' . $record->minutes % 60 . 'min',
+                             'timetrackable'  => $record->timetrackable,
+                             'duration'       => (($record->minutes - ($record->minutes % 60)) / 60) . 'h ' . $record->minutes % 60 . 'min',
                              'duration_float' => round($record->minutes / 60, 2),
                              'rate'           => money(9543, 'EUR')->format(),
                              'rate_vat'       => money(9543 * .2, 'EUR')->format(),
@@ -54,15 +58,7 @@ class TimeRecordController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(StoreTimeRecordRequest $request)
-    {
 
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -72,10 +68,14 @@ class TimeRecordController extends Controller
      */
     public function store(StoreTimeRecordRequest $request)
     {
+
         TimeRecord::create($request->validated());
 
         return back();
     }
+
+
+
 
     /**
      * Display the specified resource.
@@ -85,19 +85,37 @@ class TimeRecordController extends Controller
      */
     public function show(TimeRecord $timetrack)
     {
+
         return Inertia::render('TimeRecord/TimeRecordShow', compact('timetrack'));
     }
+
+
+
+
+    public function timetrackable(TimeRecord $timetrack)
+    {
+
+        return $timetrack->timetrackable;
+    }
+
+
+
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\TimeRecord $timeRecord
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function edit(TimeRecord $timeRecord)
+    public function edit(TimeRecord $timetrack)
     {
-        //
+        $timetrack = $timetrack->load('timetrackable');
+
+        return Inertia::render('TimeRecord/TimeRecordEdit', compact('timetrack'));
     }
+
+
+
 
     /**
      * Update the specified resource in storage.
@@ -106,10 +124,16 @@ class TimeRecordController extends Controller
      * @param \App\Models\TimeRecord $timeRecord
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTimeRecordRequest $request, TimeRecord $timeRecord)
+    public function update(UpdateTimeRecordRequest $request, TimeRecord $timetrack)
     {
-        //
+
+        $timetrack->update($request->validated());
+
+        return redirect()->route('timetrack.index');
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -119,6 +143,7 @@ class TimeRecordController extends Controller
      */
     public function destroy(TimeRecord $timetrack)
     {
+
         $timetrack->delete();
 
         return redirect()->route('timetrack.index');

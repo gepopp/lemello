@@ -5,7 +5,7 @@ import {onMounted, ref} from "vue";
 import AppLayout from '@/Layouts/AppLayout.vue';
 import GenderIcon from '@/Shared/GenderIcon.vue';
 import Pagination from '@/Shared/Pagination.vue';
-import JetButton from '@/Jetstream/Button.vue';
+import JetButton from '@/Jetstream/Button.vue'
 // noinspection ES6UnusedImports end
 
 defineProps({

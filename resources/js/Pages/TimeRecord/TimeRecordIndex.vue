@@ -6,6 +6,8 @@ import JetLabel from '@/Jetstream/Label.vue';
 import ContactSelect from '@/Shared/ContactSelect.vue';
 import TimeTrackForm from '@/Shared/TimeTrackForm.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Contactbox from '@/Shared/Contactbox.vue';
+import Projectbox from '@/Shared/Projectbox.vue';
 import {onMounted, ref, watch} from "vue";
 // noinspection ES6UnusedImports end
 const props = defineProps({
@@ -88,8 +90,8 @@ watch(() => customer_id.value, value => load());
                         <p class="text-xs font-thin">{{ track.created }}</p>
                     </td>
                     <td>
-                        <p>{{ track.customer }}</p>
-                        <p class="text-xs font-thin">{{ track.address }}</p>
+                        <Contactbox :contact="track.timetrackable" v-if="track.timetrackable?.classname == 'App\\Models\\Contact'"></Contactbox>
+                        <Projectbox :project="track.timetrackable" v-if="track.timetrackable?.classname == 'App\\Models\\Project'"></Projectbox>
                     </td>
                     <td>
                         <p>{{ track.duration }}</p>

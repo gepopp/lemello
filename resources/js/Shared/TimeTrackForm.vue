@@ -3,17 +3,16 @@
 import {useForm, usePage} from '@inertiajs/inertia-vue3';
 import JetLabel from '@/Jetstream/Label.vue';
 import ContactSelect from '@/Shared/ContactSelect.vue';
+import ProjectSelect from '@/Shared/ProjectSelect.vue';
 import JetButton from '@/Jetstream/Button.vue';
 import JetInput from '@/Jetstream/Input.vue';
 import {computed, defineEmits, ref} from "vue";
 // noinspection ES6UnusedImports end
 const props = defineProps({
-    contact_id: {
-        type: Number,
-        default: null
-    }
+    attach: Object
 });
 
+const attach_to  = ref('contact');
 const timeType = ref('duration');
 const from = ref();
 const to = ref();
@@ -21,9 +20,12 @@ const errors = computed(() => usePage().props.value.errors);
 const hasErrors = computed(() => Object.keys(errors.value).length > 0);
 
 const emit = defineEmits(['saved'])
+const contactSelect = ref();
+const projectSelect = ref();
 
 const form = useForm({
-    contact_id: props.contact_id,
+    timetrackable_type: props.attach?.classname,
+    timetrackable_id: props.attach?.id,
     duration: '',
     note: '',
     created_at: moment().format('YYYY-MM-DDTHH:mm')
@@ -34,6 +36,13 @@ const submit = () => {
         onSuccess: () => {
             emit('saved')
             form.reset();
+
+            if(attach_to.value == 'contact'){
+                contactSelect.value.reset();
+            }else{
+                projectSelect.value.reset();
+            }
+
         }
     })
 }
@@ -62,13 +71,27 @@ const calculateDuration = () => {
                 <JetLabel class="mb-1">{{ __('Date') }}</JetLabel>
                 <JetInput id="created_at" name="created_at" v-model="form.created_at" type="datetime-local" class="border-gray-300 focus:border-orange-300 focus:border-2 focus:ring-0 focus:outline-none focus:shadow-none shadow-sm mt-1 block w-full"/>
             </div>
-            <div class="my-2 flex-auto basis-0" v-if="props.contact_id === null">
-                <JetLabel class="mb-1">{{ __('Select Customer') }}</JetLabel>
+            <div class="my-2 flex-auto basis-0" v-if="props.attach !== Object">
+                <JetLabel class="mb-1">
+                    <span v-on:click="attach_to = 'contact'" class="underline cursor-pointer" :class="attach_to == 'contact' ? 'text-orange-500' : ''">{{ __('Select Customer') }}</span>
+                     / <span v-on:click="attach_to = 'project'" class="underline cursor-pointer"  :class="attach_to == 'project' ? 'text-orange-500' : ''">{{ __('Select Project') }}</span>
+                </JetLabel>
                 <ContactSelect
-                    :contact="null"
+                    v-show="attach_to === 'contact'"
+                    ref="contactSelect"
+                    :contact="attach"
                     :form="form"
                     @remove="form.contact_id = null"
-                    @set="company => form.contact_id = company.id"
+                    @set="contact => { form.timetrackable_type = contact.classname; form.timetrackable_id = contact.id}"
+                    :address="false"/>
+
+                <ProjectSelect
+                    v-show="attach_to == 'project'"
+                    ref="projectSelect"
+                    :contact="attach"
+                    :form="form"
+                    @remove="form.contact_id = null"
+                    @set="contact => { form.timetrackable_type = contact.classname; form.timetrackable_id = contact.id}"
                     :address="false"/>
             </div>
 
