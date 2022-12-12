@@ -86,7 +86,7 @@ const form = useForm({
                     <ContactSelect
                         v-show="attach_to === 'contact'"
                         ref="contactSelect"
-                        :contact="timetrack.timetrackable"
+                        :contact="timetrack.timetrackable.classname === 'App\\Models\\Contact' ? timetrack.timetrackable : null"
                         :form="form"
                         @remove="form.contact_id = null"
                         @set="contact => { form.timetrackable_type = contact.classname; form.timetrackable_id = contact.id}"
@@ -95,7 +95,7 @@ const form = useForm({
                     <ProjectSelect
                         v-show="attach_to == 'project'"
                         ref="projectSelect"
-                        :project="timetrack.timetrackable"
+                        :project="timetrack.timetrackable.classname === 'App\\Models\\Project' ? timetrack.timetrackable : null"
                         :form="form"
                         @remove="form.contact_id = null"
                         @set="contact => { form.timetrackable_type = contact.classname; form.timetrackable_id = contact.id}"
