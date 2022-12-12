@@ -4,6 +4,8 @@ import {Head, useForm, usePage} from "@inertiajs/inertia-vue3";
 import AppLayout from '@/Layouts/AppLayout.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import ContactSelect from '@/Shared/ContactSelect.vue';
+import ProjectSelect from '@/Shared/ProjectSelect.vue';
+
 import JetButton from '@/Jetstream/Button.vue';
 import JetInput from '@/Jetstream/Input.vue';
 import {computed, defineEmits, ref} from "vue";
@@ -13,6 +15,7 @@ const props = defineProps({
     timetrack: Object
 });
 
+const attach_to  = ref(props.timetrack.timetrackable_type === 'App\\Models\\Contact' ? 'contact' : 'project');
 const timeType = ref('duration');
 const from = ref();
 const to = ref();
@@ -53,8 +56,8 @@ const calculateDuration = () => {
 }
 
 const form = useForm({
-    timetrackable_type: props.attach?.classname,
-    timetrackable_id: props.attach?.id,
+    timetrackable_type: props.timetrackable?.classname,
+    timetrackable_id: props.timetrackable?.id,
     duration: minutesToDuration( props.timetrack.minutes),
     note: props.timetrack.note,
     created_at: moment( props.timetrack.started_at ).format('YYYY-MM-DDTHH:mm')
@@ -76,12 +79,26 @@ const form = useForm({
                     <JetInput id="created_at" name="created_at" v-model="form.created_at" type="datetime-local" class="border-gray-300 focus:border-orange-300 focus:border-2 focus:ring-0 focus:outline-none focus:shadow-none shadow-sm mt-1 block w-full"/>
                 </div>
                 <div class="my-2 flex-auto basis-0">
-                    <JetLabel class="mb-1">{{ __('Select Customer') }}</JetLabel>
+                    <JetLabel class="mb-1">
+                        <span v-on:click="attach_to = 'contact'" class="underline cursor-pointer" :class="attach_to == 'contact' ? 'text-orange-500' : ''">{{ __('Select Customer') }}</span>
+                        / <span v-on:click="attach_to = 'project'" class="underline cursor-pointer"  :class="attach_to == 'project' ? 'text-orange-500' : ''">{{ __('Select Project') }}</span>
+                    </JetLabel>
                     <ContactSelect
+                        v-show="attach_to === 'contact'"
+                        ref="contactSelect"
                         :contact="timetrack.timetrackable"
                         :form="form"
                         @remove="form.contact_id = null"
-                        @set="company => form.contact_id = company.id"
+                        @set="contact => { form.timetrackable_type = contact.classname; form.timetrackable_id = contact.id}"
+                        :address="false"/>
+
+                    <ProjectSelect
+                        v-show="attach_to == 'project'"
+                        ref="projectSelect"
+                        :project="timetrack.timetrackable"
+                        :form="form"
+                        @remove="form.contact_id = null"
+                        @set="contact => { form.timetrackable_type = contact.classname; form.timetrackable_id = contact.id}"
                         :address="false"/>
                 </div>
 
