@@ -62,6 +62,13 @@ const round = (value) => {
 
             <div class="grid grid-cols-1 md:grid-cols-2 md:gap-x-10">
 
+                <div class="mb-5">
+                    <p class="whitespace-pre">
+                        {{ timetrack.note }}
+                    </p>
+                </div>
+                <Seperator/>
+
                 <div>
                     <p class="flex justify-between font-semibold">
                         <span>{{ __('Tracked at:') }}</span>
