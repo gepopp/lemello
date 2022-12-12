@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Contact;
 use App\Models\Address;
+use App\Models\Project;
 use Illuminate\Support\Facades\Request;
 use App\Http\Requests\StoreContactRequest;
 
@@ -56,7 +57,9 @@ class ContactController extends Controller
     public function show(Contact $contact)
     {
 
-        return Inertia::render('Contacts/ContactShow', compact('contact'));
+        $project_count = Project::where('contact_id', $contact->id)->count();
+
+        return Inertia::render('Contacts/ContactShow', compact('contact', 'project_count'));
     }
 
 
@@ -66,6 +69,15 @@ class ContactController extends Controller
     {
 
         return $contact->contacts;
+    }
+
+
+
+
+    public function projects(Contact $contact)
+    {
+
+        return $contact->projects;
     }
 
 

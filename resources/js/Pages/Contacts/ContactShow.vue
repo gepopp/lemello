@@ -9,15 +9,18 @@ import JetModal from '@/Jetstream/Modal.vue';
 import TimeTrackForm from '@/Shared/TimeTrackForm.vue';
 import TimeTrackList from '@/Shared/TimeTrackList.vue';
 import DeleteModel from '@/Shared/DeleteModel.vue';
+import ProjectBox from '@/Shared/ProjectBox.vue';
 // noinspection ES6UnusedImports end
 const props = defineProps({
-    contact: Object
+    contact: Object,
+    project_count: Number
 })
 
 const lang = usePage().props.value.locale;
 const employees = ref([]);
 const loading = ref(false);
 const addTimetrack = ref(false);
+const projects = ref(false);
 
 onMounted(() => {
     if (props.contact.is_company == 1) {
@@ -29,7 +32,13 @@ onMounted(() => {
                     loading.value = false
                 });
         }, 1000);
+    }
 
+    if (props.project_count > 0) {
+        setTimeout(() => {
+            axios.get(route('contact.projects', {contact: props.contact}))
+                .then(data => projects.value = data.data);
+        }, 1500)
     }
 });
 </script>
@@ -115,10 +124,25 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-
                 <TimeTrackList :tracks="contact.timetracks"></TimeTrackList>
-
             </div>
+            <Seperator/>
+            <div v-for="c in project_count" v-show="!projects">
+                <div class="m-5 bg-gray-100 animate-pulse aspect-video"></div>
+                <Seperator/>
+            </div>
+
+            <h2 class="font-semibold text-xl">{{ __('Running Projects') }}</h2>
+            <div class="py-10" v-for="project in projects" v-if="projects">
+                <div class="grid grid-cols-1 md:grid-cols-2 md:gap-x-10">
+                    <div>
+                        <ProjectBox :project="project"/>
+                    </div>
+                    <TimeTrackList :tracks="project.timetracks"></TimeTrackList>
+                </div>
+                <Seperator/>
+            </div>
+
         </div>
         <JetModal :show="addTimetrack" v-on:close="addTimetrack = false">
             <div class="p-5">

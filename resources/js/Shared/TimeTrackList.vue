@@ -1,11 +1,11 @@
 <script setup>
 // noinspection ES6UnusedImports start
-import { computed } from 'vue';
+import {computed} from 'vue';
 import {usePage} from '@inertiajs/inertia-vue3';
 // noinspection ES6UnusedImports end
 
 const props = defineProps({
-    tracks : Array
+    tracks: Array
 })
 
 
@@ -39,29 +39,31 @@ const brutto = computed(() => {
     <div>
         <div v-if="tracks.length">
             <h3 class="text-xl font-semibold">{{ __('Timetracks') }}</h3>
-            <table class="w-full">
-                <tr v-for="track in tracks">
-                    <td>
-                        <p v-text="formatDateTime(track.created_at, 'DD.MM.YY')"/>
-                        <p v-text="formatDateTime(track.created_at, 'hh:mm')" class="text-sm font-thin"/>
-                    </td>
-                    <td>
-                        <p><span v-text="String(Math.floor(track.minutes / 60)).padStart(2, '0')"/>:<span v-text="String(track.minutes % 60).padStart(2, '0')"/></p>
-                        <p v-text="Math.round( (track.minutes / 60 ) * 100) / 100" class="text-sm font-thin"/>
-                    </td>
-                    <td class="whitespace-pre">{{ track.note }}</td>
-                </tr>
-                <tfoot>
-                <tr>
-                    <td class="align-top">{{ __('Total:') }}</td>
-                    <td colspan="2">
-                        <p class="flex justify-end">{{ Math.round( sumHrs * 100 ) / 100 }} Stunden à 95,43 = {{ netto }}</p>
-                        <p class="text-sm font-thin flex justify-end" v-text="Math.round( (brutto - netto) * 100 ) / 100"/>
-                        <p class="font-bold flex justify-end" v-text="brutto"/>
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
+            <div class="h-[380px] overflow-y-scroll">
+                <table class="w-full">
+                    <tr v-for="track in tracks">
+                        <td>
+                            <p v-text="formatDateTime(track.created_at, 'DD.MM.YY')"/>
+                            <p v-text="formatDateTime(track.created_at, 'hh:mm')" class="text-sm font-thin"/>
+                        </td>
+                        <td>
+                            <p><span v-text="String(Math.floor(track.minutes / 60)).padStart(2, '0')"/>:<span v-text="String(track.minutes % 60).padStart(2, '0')"/></p>
+                            <p v-text="Math.round( (track.minutes / 60 ) * 100) / 100" class="text-sm font-thin"/>
+                        </td>
+                        <td class="whitespace-pre">{{ track.note }}</td>
+                    </tr>
+                    <tfoot>
+                    <tr>
+                        <td class="align-top">{{ __('Total:') }}</td>
+                        <td colspan="2">
+                            <p class="flex justify-end">{{ Math.round(sumHrs * 100) / 100 }} Stunden à 95,43 = {{ netto }}</p>
+                            <p class="text-sm font-thin flex justify-end" v-text="Math.round( (brutto - netto) * 100 ) / 100"/>
+                            <p class="font-bold flex justify-end" v-text="brutto"/>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 </template>

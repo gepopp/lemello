@@ -47,6 +47,7 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
     Route::resource('contact', 'App\Http\Controllers\ContactController');
     Route::get('customer', [ \App\Http\Controllers\ContactController::class, 'customer' ])->name('customer.search');
     Route::get('employees/{contact}', [ \App\Http\Controllers\ContactController::class, 'employees' ])->name('employees');
+    Route::get('customer/{contact}/projects', [\App\Http\Controllers\ContactController::class, 'projects'] )->name('contact.projects');
 
     Route::resource('timetrack', 'App\Http\Controllers\TimeRecordController');
     Route::get('load/timetrack', [ 'App\Http\Controllers\TimeRecordController', 'loadIndex' ])->name('timetrack.loadIndex');
