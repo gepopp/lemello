@@ -64,6 +64,7 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
 
 });
 
+Route::resource('customer/{customer}/customer-page', \App\Http\Controllers\CustomerPageController::class);
 
 Route::get('terms', function () {
 

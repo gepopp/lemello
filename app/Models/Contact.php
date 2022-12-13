@@ -7,7 +7,6 @@ use App\Traits\AccountScoped;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
@@ -27,7 +26,7 @@ class Contact extends Model
 
 
 
-    protected $with = [ 'address', 'company', 'timetracks' ];
+    protected $with = [ 'address', 'company', 'timetracks' , 'customer_page'];
 
 
 
@@ -71,9 +70,14 @@ class Contact extends Model
     }
 
 
-    public function projects(){
-        return $this->hasMany( Project::class );
+
+
+    public function projects()
+    {
+
+        return $this->hasMany(Project::class);
     }
+
 
 
 
@@ -81,6 +85,15 @@ class Contact extends Model
     {
 
         return $this->morphMany(TimeRecord::class, 'timetrackable');
+    }
+
+
+
+
+    public function customer_page()
+    {
+
+        return $this->hasOne(CustomerPage::class);
     }
 
 
@@ -120,6 +133,8 @@ class Contact extends Model
             get: fn() => get_class($this),
         );
     }
+
+
 
 
     public function getContactsCountAttribute()

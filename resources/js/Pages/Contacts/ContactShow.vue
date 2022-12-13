@@ -10,17 +10,28 @@ import TimeTrackForm from '@/Shared/TimeTrackForm.vue';
 import TimeTrackList from '@/Shared/TimeTrackList.vue';
 import DeleteModel from '@/Shared/DeleteModel.vue';
 import ProjectBox from '@/Shared/ProjectBox.vue';
+import JetButton from '@/Jetstream/Button.vue';
 // noinspection ES6UnusedImports end
 const props = defineProps({
     contact: Object,
     project_count: Number
 })
 
+const customer_page = ref(props.contact.customer_page);
 const lang = usePage().props.value.locale;
 const employees = ref([]);
 const loading = ref(false);
 const addTimetrack = ref(false);
 const projects = ref(false);
+
+
+const createCustomerPage = () => {
+    axios.post( route('customer-page.store', { customer: props.contact })).then( (data) => customer_page.value = data.data );
+}
+
+const renewCustomerLink = () => {
+    axios.put( route('customer-page.update', { customer: props.contact, customer_page: customer_page.value })).then( (data) => customer_page.value = data.data );
+}
 
 onMounted(() => {
     if (props.contact.is_company == 1) {
@@ -88,6 +99,33 @@ onMounted(() => {
                             <span class="font-bold" v-text="contact.name"/>&nbsp;
                             <span class="text-xl font-thin" v-if="contact.is_company == 0" v-text="contact.academic_degree_after"/>
                         </p>
+                        <Seperator/>
+
+
+
+                        <div>
+                            <h3 class="font-semibold text-lg">{{ __('Customer Link')}}</h3>
+                            <div v-if="customer_page == null" class="py-5">
+                                <JetButton class="w-full justify-center" v-on:click="createCustomerPage">{{ __('Ceate Customer Page Link') }}</JetButton>
+                            </div>
+                            <div v-else class="py-5">
+                                <a :href="route('customer-page.show', { customer: contact, customer_page: customer_page.slug })" target="_blank">
+                                    {{ route('customer-page.show', { customer: contact, customer_page: customer_page.slug }) }}
+                                </a>
+                                <div class="flex justify-end items-center space-x-3 py-3 cursor-pointer" v-on:click="renewCustomerLink">
+                                    <p>{{ __('renew link') }}</p>
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
                         <p class="text-sm" v-text="contact.position" v-if="contact.is_company == 0"></p>
                         <Seperator/>
                         <p><a :href="'mailto:' + contact.email" v-text="contact.email" class="underline"/></p>
@@ -127,12 +165,13 @@ onMounted(() => {
                 <TimeTrackList :tracks="contact.timetracks"></TimeTrackList>
             </div>
             <Seperator/>
+            <h2 class="font-semibold text-xl mb-5">{{ __('Running Projects') }}</h2>
+
             <div v-for="c in project_count" v-show="!projects">
                 <div class="m-5 bg-gray-100 animate-pulse aspect-video"></div>
                 <Seperator/>
             </div>
 
-            <h2 class="font-semibold text-xl">{{ __('Running Projects') }}</h2>
             <div class="py-10" v-for="project in projects" v-if="projects">
                 <div class="grid grid-cols-1 md:grid-cols-2 md:gap-x-10">
                     <div>
@@ -142,7 +181,6 @@ onMounted(() => {
                 </div>
                 <Seperator/>
             </div>
-
         </div>
         <JetModal :show="addTimetrack" v-on:close="addTimetrack = false">
             <div class="p-5">
