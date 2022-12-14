@@ -53,7 +53,7 @@ const hasErrors = computed(() => Object.keys(errors.value).length > 0);
             <JetFormField :form="form" id="name" :label="__('Project Name')" :required="true"/>
             <div class="my-2">
                 <JetLabel>{{ __('Description') }}</JetLabel>
-                <tip-tap @update="editorContent"/>
+                <tip-tap @update="editorContent" :content="project.description"/>
             </div>
 
             <div class="mt-5 flex w-full justify-end">

@@ -4,13 +4,19 @@ import {EditorContent, useEditor } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import { ref, defineEmits, watch } from 'vue';
 // noinspection ES6UnusedImports end
+const props = defineProps({
+    content: {
+        type: String,
+        default: ''
+    }
+})
 
 const emit = defineEmits(['update'])
 
 const content =ref('')
 
 const editor = useEditor({
-    content: 'bla',
+    content: props.content,
     editable: true,
     onUpdate(event){
         content.value = event.editor.getHTML();
