@@ -810,6 +810,14 @@
     "file": "assets/FromField.35a53052.css",
     "src": "FromField.css"
   },
+  "resources/js/Pages/Projects/ProjectEdit.css": {
+    "file": "assets/ProjectEdit.5cf4224a.css",
+    "src": "resources/js/Pages/Projects/ProjectEdit.css"
+  },
+  "resources/js/Pages/Projects/ProjectCreate.css": {
+    "file": "assets/ProjectCreate.b562a423.css",
+    "src": "resources/js/Pages/Projects/ProjectCreate.css"
+  },
   "resources/js/Pages/Contacts/ContactCreate.css": {
     "file": "assets/ContactCreate.3feaf3dc.css",
     "src": "resources/js/Pages/Contacts/ContactCreate.css"
@@ -817,14 +825,6 @@
   "resources/js/Pages/Contacts/ContactEdit.css": {
     "file": "assets/ContactEdit.af170cdb.css",
     "src": "resources/js/Pages/Contacts/ContactEdit.css"
-  },
-  "resources/js/Pages/Projects/ProjectCreate.css": {
-    "file": "assets/ProjectCreate.b562a423.css",
-    "src": "resources/js/Pages/Projects/ProjectCreate.css"
-  },
-  "resources/js/Pages/Projects/ProjectEdit.css": {
-    "file": "assets/ProjectEdit.5cf4224a.css",
-    "src": "resources/js/Pages/Projects/ProjectEdit.css"
   },
   "resources/js/Pages/Welcome.css": {
     "file": "assets/Welcome.d4edece4.css",

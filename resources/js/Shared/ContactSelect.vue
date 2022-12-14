@@ -1,6 +1,7 @@
 <script setup>
 // noinspection ES6UnusedImports start
 import JetInput from '@/Jetstream/Input.vue';
+import { usePage } from '@inertiajs/inertia-vue3';
 import {ref} from "vue";
 // noinspection ES6UnusedImports end
 const props = defineProps({
