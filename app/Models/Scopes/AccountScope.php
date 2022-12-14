@@ -2,6 +2,7 @@
 
 namespace App\Models\Scopes;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -17,7 +18,10 @@ class AccountScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('account_id', auth()->user()->account->id);
+        if(Auth::check())
+        {
+            $builder->where('account_id', auth()->user()->account->id);
+        }
     }
 
 }

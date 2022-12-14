@@ -8,8 +8,8 @@ use App\Models\Contact;
 use Illuminate\Support\Str;
 use App\Models\CustomerPage;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreCustomerPageRequest;
-use App\Http\Requests\UpdateCustomerPageRequest;
+use App\Traits\AccountScoped;
+use App\Models\Scopes\AccountScope;
 
 
 
@@ -48,12 +48,11 @@ class CustomerPageController extends Controller
      */
     public function show(Contact $customer, CustomerPage $customer_page)
     {
-
         return Inertia::render('Customer/CustomerPage',
             [
                 'background' => asset('images/fruits.svg'),
                 'customer'   => $customer,
-                'projects'   => $customer->projects
+                'projects'   => $customer->projects,
             ]);
     }
 
