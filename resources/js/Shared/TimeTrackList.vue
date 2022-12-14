@@ -42,8 +42,8 @@ const brutto = computed(() => {
             <h3 class="text-xl font-semibold">{{ __('Timetracks') }}</h3>
             <div class="h-[380px] overflow-y-scroll">
                 <table class="w-full">
-                    <tr v-for="track in tracks">
-                        <td colspan="3">
+                    <tr v-for="track in tracks" class="p-0">
+                        <td colspan="3" class="p-0">
                             <TimeTrackBox :timetrack="track"/>
                         </td>
                     </tr>

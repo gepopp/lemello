@@ -13,7 +13,7 @@ import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue';
          :style="{ backgroundImage: 'url(' + usePage().props.value.background + ')' }">
 
         <div class="col-span-2 bg-white flex flex-col p-5">
-            <div class="mb-20">
+            <div class="mb-5 lg:mb-20 flex justify-center">
                 <JetAuthenticationCardLogo/>
             </div>
 
@@ -22,7 +22,7 @@ import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue';
             </div>
         </div>
 
-        <div class="col-span-6 p-20">
+        <div class="col-span-6 p-0 py-10 lg:p-20">
             <div class="bg-white p-5">
                 <slot name="main"/>
             </div>

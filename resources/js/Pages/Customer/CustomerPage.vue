@@ -22,12 +22,12 @@ const locale = usePage().props.value.locale;
 
     <CustomerLayout>
         <template #sidebar>
-            <h1 class="text-5xl font-extrabold mb-10">{{ customer.name }}</h1>
+            <h1 class="text-3xl lg:text-5xl font-extrabold mb-5">{{ customer.name }}</h1>
             <address>
-                {{ customer.address.line_1 }}<br>
-                {{ customer.address.line_2 }}<br>
-                {{ customer.address.zip }} {{ customer.address.city }}<br>
-                {{ customer.address.country[locale] }}
+                <span>{{ customer.address.line_1 }}</span><br>
+                <span>{{ customer.address.line_2 }}</span><br v-if="customer.address.line_2">
+                <span>{{ customer.address.zip }} {{ customer.address.city }}</span><br>
+                <span>{{ customer.address.country[locale] }}</span>
             </address>
         </template>
 
@@ -36,8 +36,8 @@ const locale = usePage().props.value.locale;
             <Seperator/>
             <div v-for="project in projects" class="mb-20">
                 <ProjectBox :project="project"/>
-                <div class="ml-20">
-                    <Seperator/>
+                <Seperator/>
+                <div class="lg:ml-20">
                     <TimeTrackList :tracks="project.timetracks"/>
                 </div>
                 <Seperator/>
