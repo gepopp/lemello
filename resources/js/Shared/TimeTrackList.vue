@@ -2,6 +2,7 @@
 // noinspection ES6UnusedImports start
 import {computed} from 'vue';
 import {usePage} from '@inertiajs/inertia-vue3';
+import TimeTrackBox from '@/Shared/TimeTrackBox.vue'
 // noinspection ES6UnusedImports end
 
 const props = defineProps({
@@ -42,16 +43,14 @@ const brutto = computed(() => {
             <div class="h-[380px] overflow-y-scroll">
                 <table class="w-full">
                     <tr v-for="track in tracks">
-                        <td>
-                            <p v-text="formatDateTime(track.created_at, 'DD.MM.YY')"/>
-                            <p v-text="formatDateTime(track.created_at, 'hh:mm')" class="text-sm font-thin"/>
+                        <td colspan="3">
+                            <TimeTrackBox :timetrack="track"/>
                         </td>
-                        <td>
-                            <p><span v-text="String(Math.floor(track.minutes / 60)).padStart(2, '0')"/>:<span v-text="String(track.minutes % 60).padStart(2, '0')"/></p>
-                            <p v-text="Math.round( (track.minutes / 60 ) * 100) / 100" class="text-sm font-thin"/>
-                        </td>
-                        <td class="whitespace-pre">{{ track.note }}</td>
                     </tr>
+                </table>
+            </div>
+            <div>
+                <table class="w-full">
                     <tfoot>
                     <tr>
                         <td class="align-top">{{ __('Total:') }}</td>

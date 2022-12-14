@@ -53,6 +53,7 @@ class CustomerPageController extends Controller
             [
                 'background' => asset('images/fruits.svg'),
                 'customer'   => $customer,
+                'projects'   => $customer->projects
             ]);
     }
 

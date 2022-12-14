@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\AccountScoped;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\CurrentMonthScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +39,8 @@ class TimeRecord extends Model
         static::addGlobalScope('byStart', function (Builder $query){
             return  $query->orderBy('started_at', 'ASC');
         });
+
+        static::addGlobalScope( new CurrentMonthScope );
     }
 
 
