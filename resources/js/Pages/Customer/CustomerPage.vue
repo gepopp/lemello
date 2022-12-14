@@ -1,19 +1,12 @@
 <script setup>
 // noinspection ES6UnusedImports start
-import {useForm, Link, usePage } from '@inertiajs/inertia-vue3';
-import JetAuthenticationCard from '@/Jetstream/AuthenticationCard.vue';
-import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue';
-import JetButton from '@/Jetstream/Button.vue';
-import JetInput from '@/Jetstream/Input.vue';
-import JetCheckbox from '@/Jetstream/Checkbox.vue';
-import JetLabel from '@/Jetstream/Label.vue';
-import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
-import  CustomerLayout from '@/Layouts/CustomerLayout.vue'
-import  Seperator from '@/Shared/Seperator.vue'
-import  ProjectBox from '@/Shared/ProjectBox.vue'
-import  TimeTrackList from '@/Shared/TimeTrackList.vue'
+import {Link, useForm, usePage} from '@inertiajs/inertia-vue3';
+import CustomerLayout from '@/Layouts/CustomerLayout.vue'
+import Seperator from '@/Shared/Seperator.vue'
+import ContactBox from '@/Shared/ContactBox.vue'
+import ProjectBox from '@/Shared/ProjectBox.vue'
+import TimeTrackList from '@/Shared/TimeTrackList.vue'
 // noinspection ES6UnusedImports end
-
 
 
 const props = defineProps({
@@ -26,8 +19,6 @@ const locale = usePage().props.value.locale;
 </script>
 
 <template>
-
-    <Head :title="__('Login')"/>
 
     <CustomerLayout>
         <template #sidebar>
@@ -46,10 +37,20 @@ const locale = usePage().props.value.locale;
             <div v-for="project in projects" class="mb-20">
                 <ProjectBox :project="project"/>
                 <div class="ml-20">
+                    <Seperator/>
                     <TimeTrackList :tracks="project.timetracks"/>
                 </div>
                 <Seperator/>
             </div>
+
+            <Seperator/>
+            <h3 class="text-xl font-semibold">{{ __('Other Timetracks') }}</h3>
+            <ContactBox :contact="customer"/>
+            <div class="ml-20">
+                <Seperator/>
+                <TimeTrackList :tracks="customer.timetracks"/>
+            </div>
+            <Seperator/>
         </template>
 
     </CustomerLayout>

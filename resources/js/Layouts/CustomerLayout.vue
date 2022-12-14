@@ -12,7 +12,7 @@ import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue';
     <div class="grid grid-cols-1 md:grid-cols-8 bg-cover min-h-screen"
          :style="{ backgroundImage: 'url(' + usePage().props.value.background + ')' }">
 
-        <div class="col-span-2 bg-white flex flex-col items-center justify-center">
+        <div class="col-span-2 bg-white flex flex-col p-5">
             <div class="mb-20">
                 <JetAuthenticationCardLogo/>
             </div>
