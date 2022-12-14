@@ -20,6 +20,8 @@ const search = ref('');
 const attached = ref(props.contact);
 const searched = ref([]);
 const inFocus = ref(0);
+const errors = usePage().props.value.errors;
+
 
 const debouncedHandler = _.debounce(event => {
     axios.get(route('customer.search', {...{search: event.target.value}, ...props.filter}))
@@ -48,7 +50,6 @@ const reset = () => {
 
 defineExpose({attached, reset});
 
-
 </script>
 
 <template>
@@ -62,6 +63,7 @@ defineExpose({attached, reset});
                       v-on:keydown.up="inFocus > 0 ? inFocus-- : inFocus = searched.length - 1"
                       v-on:keydown.enter="set(searched[inFocus])"
             />
+            <p class="text-xs text-red-500" v-if="errors.contact_id" v-text="errors.contact_id"></p>
             <div v-if="searched.length"
                  v-click-outside="reset"
                  class="absolute bg-white shadow-2xl border border-gray-100 w-full p-2 z-50">
