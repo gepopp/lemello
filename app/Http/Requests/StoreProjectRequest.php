@@ -54,7 +54,7 @@ class StoreProjectRequest extends FormRequest
             'user_id'     => [ 'required' ],
             'contact_id'  => [ 'exists:contacts,id' ],
             'name'        => [ 'required', 'string', 'max:250' ],
-            'description' => [ 'nullable', 'string', 'max:1200' ],
+            'description' => [ 'nullable', 'string' ],
         ];
     }
 }

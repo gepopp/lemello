@@ -40,6 +40,7 @@ const hasErrors = computed(() => Object.keys(errors.value).length > 0);
 </script>
 
 <template>
+    {{ errors }}
     <AppLayout :title="__('Edit Project')">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
