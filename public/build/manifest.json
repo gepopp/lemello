@@ -40,7 +40,7 @@
       "resources/js/Pages/Welcome.vue"
     ],
     "css": [
-      "assets/app.d235b729.css"
+      "assets/app.5481ea88.css"
     ]
   },
   "resources/js/Pages/API/Index.vue": {
@@ -814,10 +814,6 @@
     "file": "assets/ProjectCreate.b562a423.css",
     "src": "resources/js/Pages/Projects/ProjectCreate.css"
   },
-  "resources/js/Pages/Contacts/ContactCreate.css": {
-    "file": "assets/ContactCreate.3feaf3dc.css",
-    "src": "resources/js/Pages/Contacts/ContactCreate.css"
-  },
   "resources/js/Pages/Projects/ProjectEdit.css": {
     "file": "assets/ProjectEdit.3b83156c.css",
     "src": "resources/js/Pages/Projects/ProjectEdit.css"
@@ -826,12 +822,16 @@
     "file": "assets/ContactEdit.af170cdb.css",
     "src": "resources/js/Pages/Contacts/ContactEdit.css"
   },
+  "resources/js/Pages/Contacts/ContactCreate.css": {
+    "file": "assets/ContactCreate.3feaf3dc.css",
+    "src": "resources/js/Pages/Contacts/ContactCreate.css"
+  },
   "resources/js/Pages/Welcome.css": {
     "file": "assets/Welcome.d4edece4.css",
     "src": "resources/js/Pages/Welcome.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.d235b729.css",
+    "file": "assets/app.5481ea88.css",
     "src": "resources/js/app.css"
   }
 }

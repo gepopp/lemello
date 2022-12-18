@@ -44,7 +44,7 @@ td:last-child{
 }
 
 .ProseMirror {
-    @apply p-2 border border-gray-300 focus:border-orange-300 focus:border-2 focus:ring-0 focus:outline-none focus:shadow-none shadow-sm h-96;
+    @apply p-2 border border-gray-300 focus:border-orange-300 focus:border-2 focus:ring-0 focus:outline-none focus:shadow-none shadow-sm min-h-[600px];
 }
 .ProseMirror ul{
     @apply list-disc ml-5;
