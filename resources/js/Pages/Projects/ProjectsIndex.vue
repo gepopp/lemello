@@ -82,8 +82,8 @@ watch(() => customer_id.value, value => load());
                 <template v-for="project in projects">
                     <tr v-on:click.prevent="$inertia.visit(route('project.show', project))">
                         <td v-text="project.created"></td>
-                        <td v-text="project.name"></td>
-                        <td v-html="project.description" class="text-sm font-light line-clamp-3"></td>
+                        <td v-text="project.name" class="text-xl font-semibold"></td>
+                        <td v-html="project.description" class="text-sm font-light line-clamp-3 max-w-lg"></td>
                         <td>
                             <p>{{ project.customer.name }}</p>
                             <p class="text-xs font-thin">{{ project.customer.address }}</p>
